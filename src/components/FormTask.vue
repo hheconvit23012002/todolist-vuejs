@@ -1,7 +1,6 @@
 <template>
   <div>
     <form @submit.prevent="create()">
-      {{ task.name }}
       <label for="fname">First Name</label>
       <input
         type="text"
@@ -14,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   computed : {
     ...mapGetters(['task'])
@@ -27,17 +26,30 @@ export default {
   },
   methods: {
     ...mapActions(['addTask','getTask']),
+    ...mapMutations(['setTask']),
     create : function(){
-      console.log(this.task.isDone)
-      // this.addTask({name:this.name, isDone : this.isDone})
-      // .then(()=>{
-      //   this.isDone = false;
-      //   this.name = '';
-      //   alert('thanh cong')
-      // })
-      // .catch(()=>{
-      //   alert('that bai')
-      // });
+      this.addTask({name:this.name, isDone : this.isDone})
+      .then(()=>{
+        this.isDone = false;
+        this.name = '';
+        alert('thanh cong')
+      })
+      .catch(()=>{
+        alert('that bai')
+      });
+    }
+  },
+  watch: {
+    task : function(){
+      this.name = this.task.name;
+      this.isDone = this.task.isDone;
+    },
+    $route (){
+      if (typeof this.$route.params.id === "undefined") {
+        // console.log(this.$route.params.id)
+        this.name = ''
+        this.isDone = false
+      }
     }
   },
   mounted() {

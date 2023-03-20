@@ -17,7 +17,7 @@
             <span :class="{ done : value.isDone}">{{ value.name }}</span>
           </td>
           <td>
-            <input type="checkbox" :checked="value.isDone" @click="changeComlateTask({id : value.id,isDone :value.isDone})" >
+            <input type="checkbox" :checked="value.isDone" @click.prevent="changeComlateTask({id : value.id,isDone :value.isDone})" >
           </td>
           <td>
             <button class="update">
